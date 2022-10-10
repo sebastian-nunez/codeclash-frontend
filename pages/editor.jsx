@@ -125,7 +125,7 @@ const editor = () => {
                 enabled: false
               },
               fontFamily: "JetBrains Mono",
-              fontSize: 16,
+              fontSize: 14,
               readOnly: false,
               smoothScrolling: true
             }}
