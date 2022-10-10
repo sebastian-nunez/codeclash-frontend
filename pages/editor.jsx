@@ -1,9 +1,12 @@
 import React from "react";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Editor, { useMonaco, loader } from "@monaco-editor/react";
 
 const editor = () => {
+  const [language, setLanguage] = useState("python");
+  const [minutesLeft, setMinutesLeft] = useState(0); // minutes
+  const [secondsLeft, setSecondsLeft] = useState(30); // seconds
   const [code, setCode] = useState(
     `class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
@@ -12,7 +15,31 @@ const editor = () => {
     `
   );
 
-  const [language, setLanguage] = useState("python");
+  useEffect(() => {
+    let timer = null;
+
+    if (minutesLeft > 1) {
+      timer = setInterval(() => {
+        setMinutesLeft(minutesLeft - 1);
+      }, 60000); // 60000ms / 1 min
+    } else if (secondsLeft > 0) {
+      timer = setInterval(() => {
+        setSecondsLeft(secondsLeft - 1);
+      }, 1000);
+    }
+
+    return () => clearInterval(timer);
+  }, [minutesLeft, secondsLeft]);
+
+  const displayTimeLeft = () => {
+    if (minutesLeft > 1) {
+      return `Time Left: ${minutesLeft} minutes`;
+    } else if (secondsLeft > 0 && minutesLeft <= 0) {
+      return `Time Left: ${secondsLeft} seconds`;
+    } else {
+      return "Times up!";
+    }
+  };
 
   const handleEditorChange = value => {
     setCode(value);
@@ -83,15 +110,23 @@ const editor = () => {
         </div>
 
         <div className="w-full md:w-2/3 hidden md:block">
-          <h2 className="text-3xl font-bold text-center mb-5 py-10">
+          <h2 className="text-2xl font-bold text-center pt-10">
             Sebastian vs. BOT
           </h2>
+          <p className="text-center">{displayTimeLeft()}</p>
+
           <div className="border-l-2">
             <Editor
               height="80vh"
+              theme="light"
               defaultLanguage={language}
               defaultValue={code}
               onChange={handleEditorChange}
+              options={{
+                minimap: {
+                  enabled: false
+                }
+              }}
             />
           </div>
         </div>
