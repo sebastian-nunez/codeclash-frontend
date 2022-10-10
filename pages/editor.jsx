@@ -38,12 +38,12 @@ const editor = () => {
   };
 
   const handleSubmit = async () => {
-    const data = {
+    const body = {
       language: language,
       script: code
     };
 
-    alert(`POST Body: ${JSON.stringify(data)}`);
+    alert(`POST Body: ${JSON.stringify(body)}`);
 
     const res = await fetch("/problems/1/play", {
       method: "POST",
@@ -51,14 +51,8 @@ const editor = () => {
         Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: {
-        language: "python",
-        script:
-          "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass"
-      }
+      body: JSON.stringify(body)
     });
-
-    console.log(res.json());
   };
 
   return (
