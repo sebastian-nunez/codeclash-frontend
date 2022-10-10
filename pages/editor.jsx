@@ -8,11 +8,7 @@ const editor = () => {
 
   const [minutesLeft, setMinutesLeft] = useState(2); // minutes
   const [code, setCode] = useState(
-    `class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        # Code here...
-        pass
-    `
+    "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass"
   );
 
   useEffect(() => {
@@ -39,7 +35,30 @@ const editor = () => {
 
   const handleEditorChange = value => {
     setCode(value);
-    console.log(value);
+  };
+
+  const handleSubmit = async () => {
+    const data = {
+      language: language,
+      script: code
+    };
+
+    alert(`POST Body: ${JSON.stringify(data)}`);
+
+    const res = await fetch("/problems/1/play", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: {
+        language: "python",
+        script:
+          "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass"
+      }
+    });
+
+    console.log(res.json());
   };
 
   return (
@@ -107,15 +126,17 @@ const editor = () => {
         </div>
 
         <div className="w-full md:w-2/3 hidden md:block">
-          <h2 className="text-2xl font-bold text-center pt-10">
-            <span>Sebastian</span> vs. <span>Emily</span>
-          </h2>
-          <p className="text-center">{displayTimeLeft()}</p>
+          <div className="w-full">
+            <h2 className="text-2xl font-bold text-center pt-10">
+              <span>Sebastian</span> vs. <span>Emily</span>
+            </h2>
+            <p className="text-center">{displayTimeLeft()}</p>
+          </div>
 
           <Editor
             className="border-l-2"
             height="80vh"
-            theme="light"
+            theme="vs"
             defaultLanguage="python"
             language={language}
             defaultValue={code}
@@ -125,11 +146,20 @@ const editor = () => {
                 enabled: false
               },
               fontFamily: "JetBrains Mono",
-              fontSize: 16,
+              fontSize: 14,
               readOnly: false,
               smoothScrolling: true
             }}
           />
+
+          <div className="flex justify-end w-full">
+            <button
+              onClick={handleSubmit}
+              className="bg-pink-600 mt-4 mx-8 py-1 px-4 text-white rounded-md"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </div>
     </>
