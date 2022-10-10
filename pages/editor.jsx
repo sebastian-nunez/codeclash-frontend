@@ -5,6 +5,7 @@ import Editor, { useMonaco, loader } from "@monaco-editor/react";
 
 const editor = () => {
   const [language, setLanguage] = useState("python");
+
   const [minutesLeft, setMinutesLeft] = useState(0); // minutes
   const [secondsLeft, setSecondsLeft] = useState(30); // seconds
   const [code, setCode] = useState(
@@ -115,20 +116,24 @@ const editor = () => {
           </h2>
           <p className="text-center">{displayTimeLeft()}</p>
 
-          <div className="border-l-2">
-            <Editor
-              height="80vh"
-              theme="light"
-              defaultLanguage={language}
-              defaultValue={code}
-              onChange={handleEditorChange}
-              options={{
-                minimap: {
-                  enabled: false
-                }
-              }}
-            />
-          </div>
+          <Editor
+            className="border-l-2"
+            height="80vh"
+            theme="light"
+            defaultLanguage="python"
+            language={language}
+            defaultValue={code}
+            onChange={handleEditorChange}
+            options={{
+              minimap: {
+                enabled: false
+              },
+              fontFamily: "JetBrains Mono",
+              fontSize: 16,
+              readOnly: false,
+              smoothScrolling: true
+            }}
+          />
         </div>
       </div>
     </>

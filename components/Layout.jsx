@@ -8,11 +8,11 @@ const Layout = ({ children }) => {
         <title>CodeClash</title>
       </Head>
 
-      <main className="flex min-h-0 flex-col items-center justify-top">
+      <main className="flex min-h-screen flex-col items-center justify-top">
         {children}
       </main>
 
-      <footer className="bottom-0 flex h-20 w-full items-center mt-14 justify-center border-t-2">
+      <footer className="flex h-20 w-full items-center mt-14 justify-center border-t-2">
         <a
           className="flex items-center justify-center gap-2 cursor-pointer"
           href="https://upe.cs.fiu.edu/sparkdev/"

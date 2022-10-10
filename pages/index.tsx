@@ -4,8 +4,8 @@ import Link from "next/link";
 import SimpleCard from "../components/SimpleCard";
 const Home: NextPage = () => {
   return (
-    <div className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-      <h1 className="text-6xl font-bold mb-5">
+    <div className="flex h-full w-full flex-1 flex-col items-center justify-center px-20 text-center">
+      <h1 className="text-6xl font-bold mb-5 ">
         Welcome to{" "}
         <Link href="/">
           <span className="text-pink-500 cursor-pointer">CodeClash!</span>
