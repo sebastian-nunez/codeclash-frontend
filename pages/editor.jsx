@@ -1,7 +1,24 @@
 import React from "react";
 import Head from "next/head";
+import { useState } from "react";
+import Editor, { useMonaco, loader } from "@monaco-editor/react";
 
 const editor = () => {
+  const [code, setCode] = useState(
+    `class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # Code here...
+        pass
+    `
+  );
+
+  const [language, setLanguage] = useState("python");
+
+  const handleEditorChange = value => {
+    setCode(value);
+    console.log(value);
+  };
+
   return (
     <>
       <Head>
@@ -65,8 +82,18 @@ const editor = () => {
           </p>
         </div>
 
-        <div className="w-full md:w-2/3">
-          <h2 className="text-3xl font-bold mb-5 pt-10">EDITOR GOES HERE!</h2>
+        <div className="w-full md:w-2/3 hidden md:block">
+          <h2 className="text-3xl font-bold text-center mb-5 py-10">
+            Sebastian vs. BOT
+          </h2>
+          <div className="border-l-2">
+            <Editor
+              height="80vh"
+              defaultLanguage={language}
+              defaultValue={code}
+              onChange={handleEditorChange}
+            />
+          </div>
         </div>
       </div>
     </>

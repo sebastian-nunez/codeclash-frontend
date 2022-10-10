@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="flex h-24 w-full items-center mt-6 justify-center border-t">
+    <footer className="flex h-24 w-full items-center mt-6 justify-center border-t-2">
       <a
         className="flex items-center justify-center gap-2 cursor-pointer"
         href="https://upe.cs.fiu.edu/sparkdev/"
