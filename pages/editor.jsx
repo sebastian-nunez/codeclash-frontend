@@ -1,11 +1,7 @@
 import React from "react";
 import Head from "next/head";
-import dynamic from "next/dynamic";
-const MonacoEditor = dynamic(import("react-monaco-editor"), { ssr: false });
 
 const editor = () => {
-  const [postBody, setPostBody] = React.useState("");
-
   return (
     <>
       <Head>
@@ -71,31 +67,6 @@ const editor = () => {
 
         <div className="w-full md:w-2/3">
           <h2 className="text-3xl font-bold mb-5 pt-10">EDITOR GOES HERE!</h2>
-
-          <MonacoEditor
-            editorDidMount={() => {
-              // @ts-ignore
-              window.MonacoEnvironment.getWorkerUrl = (_moduleId, label) => {
-                if (label === "json") return "_next/static/json.worker.js";
-                if (label === "css") return "_next/static/css.worker.js";
-                if (label === "html") return "_next/static/html.worker.js";
-                if (label === "typescript" || label === "javascript")
-                  return "_next/static/ts.worker.js";
-                return "_next/static/editor.worker.js";
-              };
-            }}
-            width="800"
-            height="600"
-            language="markdown"
-            theme="vs-dark"
-            value={postBody}
-            options={{
-              minimap: {
-                enabled: false
-              }
-            }}
-            onChange={setPostBody}
-          />
         </div>
       </div>
     </>
