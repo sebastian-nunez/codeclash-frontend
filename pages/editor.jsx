@@ -149,7 +149,7 @@ const editor = () => {
           <div className="flex justify-end w-full">
             <button
               onClick={handleSubmit}
-              className="bg-pink-600 mt-4 mx-8 py-1 px-4 text-white rounded-md"
+              className="bg-pink-600 mt-3 mx-12 py-1 px-4 text-white rounded-md"
             >
               Submit
             </button>
