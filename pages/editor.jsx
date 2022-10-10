@@ -6,8 +6,7 @@ import Editor, { useMonaco, loader } from "@monaco-editor/react";
 const editor = () => {
   const [language, setLanguage] = useState("python");
 
-  const [minutesLeft, setMinutesLeft] = useState(0); // minutes
-  const [secondsLeft, setSecondsLeft] = useState(30); // seconds
+  const [minutesLeft, setMinutesLeft] = useState(2); // minutes
   const [code, setCode] = useState(
     `class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
@@ -19,24 +18,20 @@ const editor = () => {
   useEffect(() => {
     let timer = null;
 
-    if (minutesLeft > 1) {
+    if (minutesLeft > 0) {
       timer = setInterval(() => {
         setMinutesLeft(minutesLeft - 1);
       }, 60000); // 60000ms / 1 min
-    } else if (secondsLeft > 0) {
-      timer = setInterval(() => {
-        setSecondsLeft(secondsLeft - 1);
-      }, 1000);
     }
 
     return () => clearInterval(timer);
-  }, [minutesLeft, secondsLeft]);
+  }, [minutesLeft]);
 
   const displayTimeLeft = () => {
-    if (minutesLeft > 1) {
-      return `Time Left: ${minutesLeft} minutes`;
-    } else if (secondsLeft > 0 && minutesLeft <= 0) {
-      return `Time Left: ${secondsLeft} seconds`;
+    if (minutesLeft >= 2) {
+      return `${minutesLeft} minutes`;
+    } else if (minutesLeft == 1) {
+      return `1 minute... Hurry!`;
     } else {
       return "Times up!";
     }
@@ -55,12 +50,13 @@ const editor = () => {
 
       <div className="flex flex-col w-full md:flex-row">
         <div className="w-full px-6 py-12 md:w-1/3">
-          <h2 className="text-xl font-bold">1. Two Sum</h2>
-          <p className="text-green-600">(Easy)</p>
+          <h2 className="text-2xl font-bold">
+            1. Two Sum <span className="text-green-600">(Easy)</span>
+          </h2>
 
           <br />
           <h4 className="font-bold">Objective:</h4>
-          <div className="">
+          <div className="text-sm">
             <div>
               Given an array of integers nums and an integer target, return
               indices of the two numbers such that they add up to target.
@@ -112,7 +108,7 @@ const editor = () => {
 
         <div className="w-full md:w-2/3 hidden md:block">
           <h2 className="text-2xl font-bold text-center pt-10">
-            Sebastian vs. BOT
+            <span>Sebastian</span> vs. <span>Emily</span>
           </h2>
           <p className="text-center">{displayTimeLeft()}</p>
 
