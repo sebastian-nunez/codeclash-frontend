@@ -26,7 +26,7 @@ const editor = () => {
   const displayTimeLeft = () => {
     if (minutesLeft >= 2) {
       return `${minutesLeft} minutes`;
-    } else if (minutesLeft == 1) {
+    } else if (minutesLeft === 1) {
       return `1 minute... Hurry!`;
     } else {
       return "Times up!";
