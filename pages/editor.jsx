@@ -3,7 +3,22 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import Editor, { useMonaco, loader } from "@monaco-editor/react";
 
-const url = "http://localhost:8000";
+const URL = "http://localhost:8000";
+
+const editorConfig = {
+  theme: "vs",
+  height: "80vh",
+  defaultLanguage: "python",
+  options: {
+    minimap: {
+      enabled: false
+    },
+    fontFamily: "JetBrains Mono",
+    fontSize: 14,
+    readOnly: false,
+    smoothScrolling: true
+  }
+};
 
 const editor = ({ problem }) => {
   const [language, setLanguage] = useState("python");
@@ -42,13 +57,12 @@ const editor = ({ problem }) => {
   const handleSubmit = async () => {
     const body = {
       language: language,
-      problem: problem.id,
       script: code
     };
 
-    // alert(`POST Body: ${JSON.stringify(body)}`);
+    alert(`POST Body: ${JSON.stringify(body)}`);
 
-    const res = await fetch(`${url}/submissions/1`, {
+    const res = await fetch(`${URL}/submissions/1`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -114,21 +128,13 @@ const editor = ({ problem }) => {
 
           <Editor
             className="border-l-2"
-            height="80vh"
-            theme="vs"
-            defaultLanguage="python"
             language={language}
             defaultValue={code}
             onChange={handleEditorChange}
-            options={{
-              minimap: {
-                enabled: false
-              },
-              fontFamily: "JetBrains Mono",
-              fontSize: 14,
-              readOnly: false,
-              smoothScrolling: true
-            }}
+            defaultLanguage={editorConfig.defaultLanguage}
+            height={editorConfig.height}
+            theme={editorConfig.theme}
+            options={editorConfig.options}
           />
 
           <div className="flex justify-end w-full">
@@ -146,7 +152,7 @@ const editor = ({ problem }) => {
 };
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${url}/problems/1`);
+  const res = await fetch(`${URL}/problems/1`);
   const problem = await res.json();
 
   return {
