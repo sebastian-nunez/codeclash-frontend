@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import Editor, { useMonaco, loader } from "@monaco-editor/react";
+import ProblemPanel from "../components/ProblemPanel";
 
 const URL = "http://localhost:8000";
 
@@ -20,13 +21,11 @@ const editorConfig = {
   }
 };
 
-const editor = ({ problem }) => {
+const editor = ({ problemData }) => {
   const [language, setLanguage] = useState("python");
 
   const [minutesLeft, setMinutesLeft] = useState(2); // minutes
-  const [code, setCode] = useState(problem.starterCode);
-
-  useEffect(() => console.log(problem), []);
+  const [code, setCode] = useState(problemData.starterCode);
 
   useEffect(() => {
     let timer = null;
@@ -79,44 +78,7 @@ const editor = ({ problem }) => {
       </Head>
 
       <div className="flex flex-col w-full md:flex-row">
-        <div className="w-full px-6 py-12 md:w-1/3">
-          <h2 className="text-2xl font-bold">
-            {problem.id}. {problem.title}{" "}
-            <span className="text-green-600">({problem.difficulty})</span>
-          </h2>
-
-          <br />
-          <h4 className="font-bold">Objective:</h4>
-          {problem.objectives.map(objective => (
-            <>
-              <div className="text-sm">{objective}</div>
-              <br />
-            </>
-          ))}
-
-          {problem.examples.map((example, index) => (
-            <>
-              <h4 className="font-bold">Example {index + 1}</h4>
-              <p className="text-sm">
-                <strong>Input: </strong>
-                {example.input}
-              </p>
-
-              <p className="text-sm">
-                <strong>Output: </strong>
-                {example.output}
-              </p>
-
-              {Object.hasOwn(example, "explanation") && (
-                <p className="text-sm">
-                  <strong>Explanation: </strong>
-                  {example.explanation}
-                </p>
-              )}
-              <br />
-            </>
-          ))}
-        </div>
+        <ProblemPanel {...problemData} />
 
         <div className="w-full md:w-2/3 hidden md:block">
           <div className="w-full">
@@ -153,11 +115,11 @@ const editor = ({ problem }) => {
 
 export async function getServerSideProps(context) {
   const res = await fetch(`${URL}/problems/1`);
-  const problem = await res.json();
+  const data = await res.json();
 
   return {
     props: {
-      problem
+      problemData: data
     }
   };
 }
