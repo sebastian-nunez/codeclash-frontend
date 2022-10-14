@@ -3,13 +3,15 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import Editor, { useMonaco, loader } from "@monaco-editor/react";
 
-const editor = () => {
+const server = "http://localhost:8000";
+
+const editor = ({ problem }) => {
   const [language, setLanguage] = useState("python");
 
   const [minutesLeft, setMinutesLeft] = useState(2); // minutes
-  const [code, setCode] = useState(
-    "def twoSum(nums: List[int], target: int) -> List[int]:\n\t# Code here...\n\tpass"
-  );
+  const [code, setCode] = useState(problem.starterCode);
+
+  useEffect(() => console.log(problem), []);
 
   useEffect(() => {
     let timer = null;
@@ -45,7 +47,7 @@ const editor = () => {
 
     alert(`POST Body: ${JSON.stringify(body)}`);
 
-    const res = await fetch("/problems/1/play", {
+    const res = await fetch(`${server}/problems/1/response`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -64,59 +66,41 @@ const editor = () => {
       <div className="flex flex-col w-full md:flex-row">
         <div className="w-full px-6 py-12 md:w-1/3">
           <h2 className="text-2xl font-bold">
-            1. Two Sum <span className="text-green-600">(Easy)</span>
+            {problem.id}. {problem.title}{" "}
+            <span className="text-green-600">({problem.difficulty})</span>
           </h2>
 
           <br />
           <h4 className="font-bold">Objective:</h4>
-          <div className="text-sm">
-            <div>
-              Given an array of integers nums and an integer target, return
-              indices of the two numbers such that they add up to target.
-            </div>
-            <br />
-            <div>
-              You may assume that each input would have exactly one solution,
-              and you may not use the same element twice.
-            </div>
-            <br />
-            <div>You can return the answer in any order.</div>
-          </div>
+          {problem.objectives.map(objective => (
+            <>
+              <div className="text-sm">{objective}</div>
+              <br />
+            </>
+          ))}
 
-          <br />
-          <h4 className="font-bold">Example 1</h4>
-          <p className="text-sm">
-            <strong>Input: </strong>nums = [2,7,11,15], target = 9
-          </p>
+          {problem.examples.map((example, index) => (
+            <>
+              <h4 className="font-bold">Example {index + 1}</h4>
+              <p className="text-sm">
+                <strong>Input: </strong>
+                {example.input}
+              </p>
 
-          <p className="text-sm">
-            <strong>Output: </strong>[0,1]
-          </p>
+              <p className="text-sm">
+                <strong>Output: </strong>
+                {example.output}
+              </p>
 
-          <p className="text-sm">
-            <strong>Explanation: </strong>Because nums[0] + nums[1] == 9, we
-            return [0, 1].
-          </p>
-
-          <br />
-          <h4 className="font-bold">Example 2</h4>
-          <p className="text-sm">
-            <strong>Input: </strong>nums = [3,2,4], target = 6
-          </p>
-
-          <p className="text-sm">
-            <strong>Output: </strong>[1,2]
-          </p>
-
-          <br />
-          <h4 className="font-bold">Example 3</h4>
-          <p className="text-sm">
-            <strong>Input: </strong>nums = [3,3], target = 6
-          </p>
-
-          <p className="text-sm">
-            <strong>Output: </strong>[0,1]
-          </p>
+              {Object.hasOwn(example, "explanation") && (
+                <p className="text-sm">
+                  <strong>Explanation: </strong>
+                  {example.explanation}
+                </p>
+              )}
+              <br />
+            </>
+          ))}
         </div>
 
         <div className="w-full md:w-2/3 hidden md:block">
@@ -159,5 +143,16 @@ const editor = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const res = await fetch(`${server}/problems/1`);
+  const problem = await res.json();
+
+  return {
+    props: {
+      problem
+    }
+  };
+}
 
 export default editor;
