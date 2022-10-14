@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import Editor, { useMonaco, loader } from "@monaco-editor/react";
 
-const server = "http://localhost:8000";
+const url = "http://localhost:8000";
 
 const editor = ({ problem }) => {
   const [language, setLanguage] = useState("python");
@@ -42,12 +42,13 @@ const editor = ({ problem }) => {
   const handleSubmit = async () => {
     const body = {
       language: language,
+      problem: problem.id,
       script: code
     };
 
-    alert(`POST Body: ${JSON.stringify(body)}`);
+    // alert(`POST Body: ${JSON.stringify(body)}`);
 
-    const res = await fetch(`${server}/problems/1/response`, {
+    const res = await fetch(`${url}/submissions/1`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -145,7 +146,7 @@ const editor = ({ problem }) => {
 };
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${server}/problems/1`);
+  const res = await fetch(`${url}/problems/1`);
   const problem = await res.json();
 
   return {
