@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import Editor, { useMonaco, loader } from "@monaco-editor/react";
-import ProblemPanel from "../components/ProblemPanel";
+import PromptPanel from "../components/PromptPanel";
 
 const URL = "http://localhost:8000";
 
@@ -78,7 +78,7 @@ const editor = ({ problemData }) => {
       </Head>
 
       <div className="flex flex-col w-full md:flex-row">
-        <ProblemPanel {...problemData} />
+        <PromptPanel {...problemData} />
 
         <div className="w-full md:w-2/3 hidden md:block">
           <div className="w-full">

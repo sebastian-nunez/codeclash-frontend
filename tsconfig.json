@@ -23,7 +23,7 @@
     "pages/editor.jsx",
     "pages/problems.jsx",
     "pages/profile.jsx",
-    "components/ProblemPanel.jsx"
+    "components/PromptPanel.jsx"
   ],
   "exclude": ["node_modules"]
 }

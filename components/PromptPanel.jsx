@@ -1,6 +1,6 @@
 import React from "react";
 
-function problemPanel({ id, title, difficulty, objectives, examples }) {
+function promptPanel({ id, title, difficulty, objectives, examples }) {
   return (
     <div className="w-full px-6 py-12 md:w-1/3">
       <h2 className="text-2xl font-bold">
@@ -42,4 +42,4 @@ function problemPanel({ id, title, difficulty, objectives, examples }) {
   );
 }
 
-export default problemPanel;
+export default promptPanel;
